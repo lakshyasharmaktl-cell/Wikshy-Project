@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 export default function Signup() {
 
   const navigate = useNavigate();
-
+  const [open, setOpen] = useState(false)
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -39,16 +39,24 @@ export default function Signup() {
 
     try {
       const response = await axios.post(
-        "http://localhost:1234/laxxy",
+        "https://backend-live-g8zk.onrender.com/create_user",
         formData
       );
 
       toast.success(response?.data?.msg || "OTP sent to your email ");
-      
+
       navigate(`/otp/${response?.data?.id}`);
 
     } catch (err) {
       toast.error(err.response?.data?.msg || "Server error. Try again.");
+    }
+  };
+
+  const googleLogInAPi = () => {
+    try {
+      window.location.href = "http://localhost:1234/auth/google";
+    } catch (err) {
+      console.log(err);
     }
   };
 
@@ -64,7 +72,6 @@ export default function Signup() {
           />
         </div>
 
-        {/* FORM */}
         <div className="w-full lg:w-1/2 p-8 md:p-12">
           <h2 className="text-3xl font-bold text-white mb-6">
             Create Account
@@ -72,7 +79,6 @@ export default function Signup() {
 
           <form onSubmit={handleSubmit} className="space-y-4">
 
-            {/* NAME */}
             <div>
               <label className="block text-xs text-amber-500 mb-1 uppercase">
                 Full Name
@@ -182,7 +188,26 @@ export default function Signup() {
             >
               Sign Up
             </button>
-
+            <div className="mt-6 flex justify-center">
+              <button
+              type="button"
+                onClick={googleLogInAPi}
+                className="flex items-center justify-center gap-3 
+               bg-white text-gray-700 font-semibold 
+               px-6 py-3 rounded-xl 
+               shadow-md hover:shadow-lg 
+               hover:scale-105 
+               transition-all duration-300 
+               border border-gray-300"
+              >
+                <img
+                  className="h-6 w-6"
+                  src="https://static.vecteezy.com/system/resources/previews/042/165/816/non_2x/google-logo-transparent-free-png.png"
+                  alt="Google Logo"
+                />
+                <span>Continue with Google</span>
+              </button>
+            </div>
           </form>
         </div>
       </div>
